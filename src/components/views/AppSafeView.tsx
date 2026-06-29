@@ -1,4 +1,4 @@
-import { StyleSheet, SafeAreaView, View, Platform, StatusBar, ViewStyle } from 'react-native'
+import { StyleSheet, SafeAreaView, View, StatusBar, ViewStyle } from 'react-native'
 import React, { FC, ReactNode } from 'react'
 import { AppColors } from '../../styles/color';
 import { Is_Android } from '../../constants/constants';
