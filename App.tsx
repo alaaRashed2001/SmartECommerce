@@ -3,6 +3,7 @@ import AppSafeView from './src/components/views/AppSafeView';
 import FlashMessage, { showMessage } from 'react-native-flash-message'
 import { AppColors } from './src/styles/color';
 import AppButton from './src/components/buttons/AppButton';
+import AppTextInput from './src/components/inputs/AppTextInput';
 
 export default function App() {
   return (
@@ -12,6 +13,9 @@ export default function App() {
       <AppSafeView>
         <FlashMessage position={"top"}></FlashMessage>
         <AppText variant="medium">Open up App.tsx to start working on your app!</AppText>
+        <AppTextInput
+      placeholder="Enter email"
+        />
         <AppButton
           title={"Show Message"}
           onPress={() => showMessage({
