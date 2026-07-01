@@ -30,10 +30,10 @@ const SigninScreen = () => {
 
             <AppText style={styles.appName}>Smart E-Commerce</AppText>
 
-            <AppButton title="LOGIN" />
+            <AppButton title="LOGIN" onPress={() => { navigation.navigate("MainAppBottomTaps" as never) }} />
             <AppButton title="SIGNUP"
                 onPress={() => navigation.navigate("SignUp" as never)}
-             buttonStyle={styles.signupButton} textColor={AppColors.primary} />
+                buttonStyle={styles.signupButton} textColor={AppColors.primary} />
         </AppSafeView>
     )
 }
