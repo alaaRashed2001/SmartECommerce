@@ -9,10 +9,12 @@ import AppButton from '../../components/buttons/AppButton';
 import { IMAGES } from '../../constants/images-paths';
 import AppTextInput from '../../components/inputs/AppTextInput';
 import AppText from '../../components/text/AppText';
+import { useNavigation } from '@react-navigation/native';
 const SignupScreen = () => {
     const [username, setUsername] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const navigation = useNavigation()
     return (
         <AppSafeView style={styles.container}>
             <Image source={IMAGES.appLogo} style={styles.logo} />
@@ -34,7 +36,9 @@ const SignupScreen = () => {
             <AppText style={styles.appName}>Smart E-Commerce</AppText>
             <AppButton title="CREATE ACCOUNT" />
 
-            <AppButton title="Go to Login" buttonStyle={styles.signinButton} textColor={AppColors.primary} />
+            <AppButton title="Go to Login"
+                onPress={() => navigation.navigate("SignIn" as never)}
+             buttonStyle={styles.signinButton} textColor={AppColors.primary} />
         </AppSafeView>
     )
 }

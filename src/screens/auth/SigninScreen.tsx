@@ -9,10 +9,12 @@ import AppTextInput from '../../components/inputs/AppTextInput';
 import AppText from '../../components/text/AppText';
 import AppButton from '../../components/buttons/AppButton';
 import { AppColors } from '../../styles/color';
+import { useNavigation } from '@react-navigation/native';
 
 const SigninScreen = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const navigation = useNavigation()
     return (
         <AppSafeView style={styles.container}>
             <Image source={IMAGES.appLogo} style={styles.logo} />
@@ -29,7 +31,9 @@ const SigninScreen = () => {
             <AppText style={styles.appName}>Smart E-Commerce</AppText>
 
             <AppButton title="LOGIN" />
-            <AppButton title="SIGNUP" buttonStyle={styles.signupButton} textColor={AppColors.primary} />
+            <AppButton title="SIGNUP"
+                onPress={() => navigation.navigate("SignUp" as never)}
+             buttonStyle={styles.signupButton} textColor={AppColors.primary} />
         </AppSafeView>
     )
 }

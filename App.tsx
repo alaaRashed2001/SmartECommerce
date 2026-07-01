@@ -1,14 +1,17 @@
 import FlashMessage from 'react-native-flash-message'
-import SigninScreen from './src/screens/auth/SigninScreen';
-import SignupScreen from './src/screens/auth/SignupScreen';
+import AuthStack from './src/navigation/AuthStack';
+import { NavigationContainer } from '@react-navigation/native';
 
 
 export default function App() {
   return (
     <>
-      <FlashMessage position={"top"} />
+      <NavigationContainer>
+        <FlashMessage position={"top"} />
 
-      <SignupScreen />
+        <AuthStack />
+      </NavigationContainer>
+
     </>
   );
 }
