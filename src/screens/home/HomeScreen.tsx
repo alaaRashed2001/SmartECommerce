@@ -7,7 +7,7 @@ const HomeScreen = () => {
   return (
     <AppSafeView>
       <HomeHeader />
-
+      <Text style={styles.screenTitle}>Home Screen</Text>
     </AppSafeView>
   )
 }
@@ -15,5 +15,11 @@ const HomeScreen = () => {
 export default HomeScreen
 
 const styles = StyleSheet.create({
-
+  screenTitle: {
+  
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginVertical: 20
+  }
 })
