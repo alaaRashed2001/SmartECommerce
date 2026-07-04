@@ -5,6 +5,7 @@ import { Fonts } from '../../styles/font';
 import AppText from '../text/AppText';
 import { AppColors } from '../../styles/color';
 import { AntDesign } from '@expo/vector-icons';
+import IncreaseDecreaseButtons from './IncreaseDecreaseButtons';
 const tempItem = {
     id: 1,
     price: 1199,
@@ -33,6 +34,7 @@ const CartItem = () => {
                 <AppText>${(tempItem.price)}</AppText>
 
                 {/* Increment/Decrement Buttons */}
+                <IncreaseDecreaseButtons />
 
             </View>
 
