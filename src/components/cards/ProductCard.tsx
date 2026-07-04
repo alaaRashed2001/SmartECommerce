@@ -7,6 +7,7 @@ import { tempImage } from '../../constants/temp';
 import AppText from '../text/AppText';
 import { Fonts } from '../../styles/font';
 import AddToCartButton from './AddToCartButton';
+import { commonStyles } from '../../styles/sharedStyles';
 
 const ProductCard = () => {
     return (
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
         height: vs(190),
         backgroundColor: AppColors.white,
         borderRadius: s(10),
-        borderWidth: 1,
+        ...commonStyles.shadow,
     },
     productImage: {
         overflow: 'hidden',
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
     image: {
         width: '100%',
         height: '100%',
-        resizeMode: 'cover',
+        resizeMode: 'contain',
     },
     details: {
         flex: 1,
