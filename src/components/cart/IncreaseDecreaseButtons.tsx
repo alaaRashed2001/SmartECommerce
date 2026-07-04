@@ -1,19 +1,25 @@
 import { Pressable, StyleSheet, View } from 'react-native'
-import React from 'react'
+import React, { FC } from 'react'
 import { AppColors } from '../../styles/color';
 import { s, vs } from 'react-native-size-matters'
 import AppText from '../text/AppText';
 import { FontAwesome } from '@expo/vector-icons';
-
-const IncreaseDecreaseButtons = () => {
+interface IncreaseDecreaseButtonsProps {
+    quantity: number;
+    onIncreasePress: () => void;
+    onDecreasePress: () => void;
+}
+const IncreaseDecreaseButtons: FC<IncreaseDecreaseButtonsProps> = ({ quantity,
+    onIncreasePress,
+    onDecreasePress, }) => {
     return (
         <View style={styles.quantityContainer}>
 
-            <Pressable style={styles.button}> <FontAwesome name="minus" size={s(10)} color={AppColors.primary} /> </Pressable>
+            <Pressable onPress={onDecreasePress} style={styles.button}> <FontAwesome name="minus" size={s(10)} color={AppColors.primary} /> </Pressable>
 
-            <AppText style={styles.buttonText}>1</AppText>
+            <AppText style={styles.buttonText}>{quantity}</AppText>
 
-            <Pressable style={styles.button}> <FontAwesome name="plus" size={s(10)} color={AppColors.primary} /> </Pressable>
+            <Pressable onPress={onIncreasePress} style={styles.button}> <FontAwesome name="plus" size={s(10)} color={AppColors.primary} /> </Pressable>
 
         </View>
     )

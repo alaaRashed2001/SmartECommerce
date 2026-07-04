@@ -1,20 +1,33 @@
 import { StyleSheet, Image, View, Pressable } from 'react-native'
-import React from 'react'
+import React, { FC } from 'react'
 import { s, vs } from 'react-native-size-matters'
 import { Fonts } from '../../styles/font';
 import AppText from '../text/AppText';
 import { AppColors } from '../../styles/color';
 import { AntDesign } from '@expo/vector-icons';
 import IncreaseDecreaseButtons from './IncreaseDecreaseButtons';
-const tempItem = {
-    id: 1,
-    price: 1199,
-    title: "iPhone 16 Pro Max",
-    imageURL:
-        "https://2b.com.eg/media/catalog/product/cache/661473ab953cdcdf4c3b607144109b90/m/a/ma658.jpg",
+
+interface CartItemProps {
+    title: string;
+    price: number;
+    imageURL: string;
+    quantity: number;
+    onIncreasePress: () => void;
+    onDecreasePress: () => void;
+    onDeletePress: () => void;
 }
 
-const CartItem = () => {
+const CartItem: FC<CartItemProps> = (
+    {
+        title,
+        price,
+        imageURL,
+        quantity,
+        onIncreasePress,
+        onDecreasePress,
+        onDeletePress,
+    }
+) => {
     return (
         <View style={styles.container}>
 
@@ -22,7 +35,7 @@ const CartItem = () => {
             {/* Image Container */}
             <View style={styles.imageContainer}>
 
-                <Image source={{ uri: tempItem.imageURL }}
+                <Image source={{ uri: imageURL }}
                     style={styles.image}
                 />
 
@@ -30,11 +43,15 @@ const CartItem = () => {
 
             {/* Details Container */}
             <View style={styles.detailsContainer}>
-                <AppText style={styles.title}>{tempItem.title}</AppText>
-                <AppText>${(tempItem.price)}</AppText>
+                <AppText style={styles.title}>{title}</AppText>
+                <AppText>${price}</AppText>
 
                 {/* Increment/Decrement Buttons */}
-                <IncreaseDecreaseButtons />
+                <IncreaseDecreaseButtons
+                    quantity={quantity}
+                    onIncreasePress={onIncreasePress}
+                    onDecreasePress={onDecreasePress}
+                />
 
             </View>
 
@@ -42,7 +59,7 @@ const CartItem = () => {
 
             <View style={styles.deleteButtonContainer}>
 
-                <Pressable style={styles.deleteButton}>
+                <Pressable onPress={onDeletePress} style={styles.deleteButton}>
                     <AntDesign name="delete" size={s(14)} color={AppColors.red} />
                     <AppText style={styles.deleteText}>Delete</AppText>
                 </Pressable>
