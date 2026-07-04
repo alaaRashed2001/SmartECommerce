@@ -3,11 +3,13 @@ import React from 'react'
 import AppSafeView from '../../components/views/AppSafeView';
 import HomeHeader from '../../components/headers/HomeHeader';
 import EmptyCart from './EmptyCart';
+import CartItem from '../../components/cart/CartItem';
 const CartScreen = () => {
   return (
     <AppSafeView>
       <HomeHeader />
-      <EmptyCart />
+      {/* <EmptyCart /> */}
+      <CartItem />
     </AppSafeView>
   )
 }
