@@ -1,30 +1,35 @@
 import { Image, StyleSheet, View } from 'react-native'
-import React from 'react'
-import { s } from 'react-native-size-matters';
-import { vs } from 'react-native-size-matters';
+import React, { FC } from 'react'
+import { s, vs } from 'react-native-size-matters';
 import { AppColors } from '../../styles/color';
-import { tempImage } from '../../constants/temp';
 import AppText from '../text/AppText';
 import { Fonts } from '../../styles/font';
 import AddToCartButton from './AddToCartButton';
 import { commonStyles } from '../../styles/sharedStyles';
 
-const ProductCard = () => {
+interface ProductCardProps {
+    onAddToCartPress: () => void;
+    imageSource: string;
+    productName: string;
+    productPrice: string;
+}
+
+const ProductCard: FC<ProductCardProps> = ({ onAddToCartPress, imageSource, productName, productPrice }) => {
     return (
         <View style={styles.productCard}>
 
             {/* AddToCartButton component is rendered here */}
-            <AddToCartButton />
+            <AddToCartButton onPress={onAddToCartPress} />
 
             {/* Product image */}
             <View style={styles.productImage} >
-                <Image style={styles.image} source={{ uri: tempImage }} />
+                <Image style={styles.image} source={{ uri: imageSource }} />
             </View>
 
             {/* Product details */}
             <View style={styles.details}>
-                <AppText style={styles.productName}>Product Name</AppText>
-                <AppText style={styles.productPrice}>2000$</AppText>
+                <AppText style={styles.productName}>{productName}</AppText>
+                <AppText style={styles.productPrice}>{productPrice}</AppText>
             </View>
 
 

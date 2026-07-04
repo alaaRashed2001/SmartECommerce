@@ -1,14 +1,37 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, FlatList } from 'react-native'
 import React from 'react'
 import AppSafeView from '../../components/views/AppSafeView';
 import HomeHeader from '../../components/headers/HomeHeader';
 import ProductCard from '../../components/cards/ProductCard';
+import { products } from '../../data/products';
+import { sharedPadHorizontal } from '../../styles/sharedStyles';
+import { vs } from 'react-native-size-matters';
 
 const HomeScreen = () => {
   return (
     <AppSafeView>
       <HomeHeader />
-      <ProductCard />
+      <FlatList
+        numColumns={2}
+        columnWrapperStyle={
+          {
+            justifyContent: 'space-between',
+            marginBottom: vs(10),
+          }
+        }
+        contentContainerStyle={{ paddingHorizontal: sharedPadHorizontal }}
+        data={products}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <ProductCard
+            imageSource={item.imageURL}
+            productName={item.title}
+            productPrice={`$${item.price}`}
+            onAddToCartPress={() => console.log(`Added ${item.title} to cart`)}
+          />
+        )}
+
+      />
     </AppSafeView>
   )
 }

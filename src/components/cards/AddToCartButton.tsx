@@ -1,12 +1,16 @@
 import { StyleSheet, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { FC } from 'react'
 import { s } from 'react-native-size-matters';
 import { AppColors } from '../../styles/color';
 import { Ionicons } from '@expo/vector-icons';
 
-const AddToCartButton = () => {
+interface AddToCartButtonProps {
+    onPress: () => void;
+}
+
+const AddToCartButton: FC<AddToCartButtonProps> = ({ onPress }) => {
     return (
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={onPress}>
             <Ionicons name="cart" size={s(15)} color={AppColors.white} />
         </TouchableOpacity>
     )
