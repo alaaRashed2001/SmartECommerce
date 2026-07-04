@@ -6,15 +6,21 @@ import { AppColors } from '../../styles/color';
 import { tempImage } from '../../constants/temp';
 import AppText from '../text/AppText';
 import { Fonts } from '../../styles/font';
+import AddToCartButton from './AddToCartButton';
 
 const ProductCard = () => {
     return (
         <View style={styles.productCard}>
 
+            {/* AddToCartButton component is rendered here */}
+            <AddToCartButton />
+
+            {/* Product image */}
             <View style={styles.productImage} >
                 <Image style={styles.image} source={{ uri: tempImage }} />
             </View>
 
+            {/* Product details */}
             <View style={styles.details}>
                 <AppText style={styles.productName}>Product Name</AppText>
                 <AppText style={styles.productPrice}>2000$</AppText>
