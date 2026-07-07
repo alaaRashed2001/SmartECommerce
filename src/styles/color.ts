@@ -9,4 +9,5 @@ export const AppColors = {
     medGrey: "#939393",
     border: "#ccc",
     red: "#FF0000",
+    secondaryColor: "#C71A34",
 }
