@@ -6,8 +6,11 @@ import ProductCard from '../../components/cards/ProductCard';
 import { products } from '../../data/products';
 import { sharedPadHorizontal } from '../../styles/sharedStyles';
 import { vs } from 'react-native-size-matters';
+import { useDispatch } from 'react-redux';
+import { addItemToCart } from '../../store/reducer/cartSlice';
 
 const HomeScreen = () => {
+  const dispatch = useDispatch()
   return (
     <AppSafeView>
       <HomeHeader />
@@ -27,7 +30,7 @@ const HomeScreen = () => {
             imageSource={item.imageURL}
             productName={item.title}
             productPrice={`$${item.price}`}
-            onAddToCartPress={() => console.log(`Added ${item.title} to cart`)}
+            onAddToCartPress={() => { dispatch(addItemToCart(item)) }}
           />
         )}
 
