@@ -15,11 +15,11 @@ const IncreaseDecreaseButtons: FC<IncreaseDecreaseButtonsProps> = ({ quantity,
     return (
         <View style={styles.quantityContainer}>
 
-            <Pressable onPress={onDecreasePress} style={styles.button}> <FontAwesome name="minus" size={s(10)} color={AppColors.primary} /> </Pressable>
+            <Pressable onPress={onDecreasePress} style={styles.button}><FontAwesome name="minus" size={s(10)} color={AppColors.primary} /></Pressable>
 
             <AppText style={styles.buttonText}>{quantity}</AppText>
 
-            <Pressable onPress={onIncreasePress} style={styles.button}> <FontAwesome name="plus" size={s(10)} color={AppColors.primary} /> </Pressable>
+            <Pressable onPress={onIncreasePress} style={styles.button}><FontAwesome name="plus" size={s(10)} color={AppColors.primary} /></Pressable>
 
         </View>
     )
