@@ -1,42 +1,62 @@
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Alert } from 'react-native'
 import React from 'react'
 import AppSafeView from '../../components/views/AppSafeView';
 import { commonStyles, sharedPadHorizontal } from '../../styles/sharedStyles';
 import { s, vs } from 'react-native-size-matters';
 import { AppColors } from '../../styles/color';
-import AppTextInput from '../../components/inputs/AppTextInput';
 import AppButton from '../../components/buttons/AppButton';
 import { Is_Android, Is_IOS } from '../../constants/constants';
+import { useForm } from 'react-hook-form'
+import AppTextInputController from '../../components/inputs/AppTextInputController';
+import * as yup from 'yup'
+import { yupResolver } from "@hookform/resolvers/yup"
+
+const schema = yup.object({
+    fullName: yup
+        .string()
+        .required("Name is required")
+        .min(3, "Name must be at least 3 characters"),
+
+    phoneNumber: yup
+        .string()
+        .required("Phone number is required")
+        .matches(/^[0-9]+$/, "Must be only digits")
+        .min(10, 'Phone number must be at least 10 digits'),
+
+    detailedAddress: yup
+        .string()
+        .required('Address is required')
+        .min(15, 'Please provide a detailed address with at least 15 characters')
+}).required()
+
+type FormData = yup.InferType<typeof schema>
 
 const CheckoutScreen = () => {
+
+    const { control, handleSubmit } = useForm({
+        resolver: yupResolver(schema)
+    });
+
+    const saveOrder = (formData: FormData) => {
+        Alert.alert(JSON.stringify(formData))
+        console.log(formData);
+    };
+
     return (
         <AppSafeView>
 
             <View style={{ paddingHorizontal: sharedPadHorizontal }}>
                 <View style={styles.inputContainer}>
-
-                    <AppTextInput
-                        placeholder="Full Name"
-
-                    />
-
-                    <AppTextInput
-                        placeholder="Phone Number"
-
-                    />
-
-                    <AppTextInput
-                        placeholder="Detailed Address"
-
-                    />
-
-                </ View>
+                    <AppTextInputController control={control} name={"fullName"} placeholder='Full Name' />
+                    <AppTextInputController control={control} name={"phoneNumber"} placeholder='Phone Number' />
+                    <AppTextInputController control={control} name={"detailedAddress"} placeholder='Detailed Address' />
+                </View>
             </View>
 
             <View style={styles.buttonButtomContainer}>
                 <AppButton
                     title="Confirm"
-                    onPress={() => { }}
+                    onPress={handleSubmit(saveOrder)}
                 />
             </View>
         </AppSafeView>
