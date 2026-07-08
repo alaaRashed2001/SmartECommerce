@@ -1,39 +1,72 @@
 import { StyleSheet, Image } from 'react-native'
-import React, { useState } from 'react'
 import AppSafeView from '../../components/views/AppSafeView';
 import { sharedPadHorizontal } from '../../styles/sharedStyles';
 import { IMAGES } from '../../constants/images-paths';
 import { s } from 'react-native-size-matters';
 import { vs } from 'react-native-size-matters';
-import AppTextInput from '../../components/inputs/AppTextInput';
 import AppText from '../../components/text/AppText';
 import AppButton from '../../components/buttons/AppButton';
 import { AppColors } from '../../styles/color';
 import { useNavigation } from '@react-navigation/native';
 
+// 1- Form Controller Imports
+import AppTextInputController from "../../components/inputs/AppTextInputController";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+// 2- Make schema
+const schema = yup
+    .object({
+        email: yup
+            .string()
+            .email("Please enter a valid email")
+            .required("Email is required"),
+        password: yup
+            .string()
+            .required("Password is required")
+            .min(6, "Password must be at least 6 characters"),
+    })
+    .required();
+
+// 3- Define the type
+type FormData = yup.InferType<typeof schema>;
+
 const SigninScreen = () => {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const navigation = useNavigation()
+    // 4- init the useForm hook
+    const { control, handleSubmit } = useForm<FormData>({
+        resolver: yupResolver(schema),
+    });
+
+    const navigation = useNavigation();
+
+    const onLoginPress = () => navigation.navigate("MainAppBottomTabs");
     return (
         <AppSafeView style={styles.container}>
             <Image source={IMAGES.appLogo} style={styles.logo} />
-            <AppTextInput
+            {/* replace AppTextInput with  AppTextInputController*/}
+            <AppTextInputController<FormData>
+                control={control}
+                name="email"
                 placeholder="Email"
-                onChangeText={setEmail}
+                keyboardType="email-address"
             />
-            <AppTextInput
+            <AppTextInputController<FormData>
+                control={control}
+                name="password"
                 placeholder="Password"
-                onChangeText={setPassword}
                 secureTextEntry
             />
 
             <AppText style={styles.appName}>Smart E-Commerce</AppText>
 
-            <AppButton title="LOGIN" onPress={() => { navigation.navigate("MainAppBottomTaps" as never) }} />
-            <AppButton title="SIGNUP"
-                onPress={() => navigation.navigate("SignUp" as never)}
-                buttonStyle={styles.signupButton} textColor={AppColors.primary} />
+            <AppButton title="Login" onPress={handleSubmit(onLoginPress)} />
+            <AppButton
+                title="Sign Up"
+                buttonStyle={styles.signupButton}
+                textColor={AppColors.primary}
+                onPress={() => navigation.navigate("SignUpScreen")}
+            />
         </AppSafeView>
     )
 }

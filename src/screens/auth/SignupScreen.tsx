@@ -1,5 +1,4 @@
-import { Image, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
+import { Image, StyleSheet, Alert } from 'react-native'
 import { AppColors } from '../../styles/color';
 import { vs } from 'react-native-size-matters';
 import { s } from 'react-native-size-matters';
@@ -7,38 +6,74 @@ import { sharedPadHorizontal } from '../../styles/sharedStyles';
 import AppSafeView from '../../components/views/AppSafeView';
 import AppButton from '../../components/buttons/AppButton';
 import { IMAGES } from '../../constants/images-paths';
-import AppTextInput from '../../components/inputs/AppTextInput';
 import AppText from '../../components/text/AppText';
 import { useNavigation } from '@react-navigation/native';
+
+// Form Controller Imports
+import AppTextInputController from "../../components/inputs/AppTextInputController";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const schema = yup
+    .object({
+        userName: yup
+            .string()
+            .required("User name is required")
+            .min(5, "User name must be more than 5 characters"),
+        email: yup.string().email("Email is wrong").required("Email is required"),
+        password: yup
+            .string()
+            .required("Password is required")
+            .min(6, "Password must be at least 6 characters"),
+    })
+    .required();
+
+type FormData = yup.InferType<typeof schema>;
+
 const SignupScreen = () => {
-    const [username, setUsername] = useState("")
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const navigation = useNavigation()
+    const { control, handleSubmit } = useForm<FormData>({
+        resolver: yupResolver(schema),
+    });
+
+    const navigation = useNavigation();
+
+    const onSignUpPress = () => {
+        Alert.alert("User Created");
+        navigation.navigate("MainAppBottomTabs");
+    };
     return (
         <AppSafeView style={styles.container}>
             <Image source={IMAGES.appLogo} style={styles.logo} />
-            <AppTextInput
-                placeholder="Username"
-                onChangeText={setUsername}
+            <AppTextInputController<FormData>
+                control={control}
+                name="userName"
+                placeholder="User Name"
             />
-            <AppTextInput
+            <AppTextInputController<FormData>
+                control={control}
+                name="email"
                 placeholder="Email"
-                onChangeText={setEmail}
+                keyboardType="email-address"
             />
-
-            <AppTextInput
+            <AppTextInputController<FormData>
+                control={control}
+                name="password"
                 placeholder="Password"
-                onChangeText={setPassword}
                 secureTextEntry
             />
 
             <AppText style={styles.appName}>Smart E-Commerce</AppText>
-            <AppButton title="CREATE ACCOUNT" />
-
-            <AppButton title="Go to Login"
-                onPress={() => navigation.navigate("SignIn" as never)}
-             buttonStyle={styles.signinButton} textColor={AppColors.primary} />
+            <AppButton
+                title="Create New Account"
+                onPress={handleSubmit(onSignUpPress)}
+            />
+            <AppButton
+                title="Go To Sign In"
+                buttonStyle={styles.signinButton}
+                textColor={AppColors.primary}
+                onPress={() => navigation.navigate("SignInScreen")}
+            />
         </AppSafeView>
     )
 }
