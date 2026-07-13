@@ -9,13 +9,16 @@ import AppButton from '../../components/buttons/AppButton';
 import { AppColors } from '../../styles/color';
 import { useNavigation } from '@react-navigation/native';
 
-// 1- Form Controller Imports
 import AppTextInputController from "../../components/inputs/AppTextInputController";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-// 2- Make schema
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../config/firebase';
+import { showMessage } from "react-native-flash-message";
+
+
 const schema = yup
     .object({
         email: yup
@@ -29,18 +32,46 @@ const schema = yup
     })
     .required();
 
-// 3- Define the type
+
 type FormData = yup.InferType<typeof schema>;
 
 const SigninScreen = () => {
-    // 4- init the useForm hook
+
     const { control, handleSubmit } = useForm<FormData>({
         resolver: yupResolver(schema),
     });
 
     const navigation = useNavigation();
 
-    const onLoginPress = () => navigation.navigate("MainAppBottomTabs");
+    const onLoginPress = async (data: FormData) => {
+        try {
+            const userCredential = await signInWithEmailAndPassword(
+                auth,
+                data.email,
+                data.password,
+            )
+            navigation.navigate("MainAppBottomTabs")
+            console.log(userCredential);
+        } catch (error: any) {
+            let errorMessage = ""
+            console.log(error.code)
+            if (error.code === "auth/user-not-found") {
+                errorMessage = "User not found"
+            } else if (error.code === "auth/invalid-credential") {
+                errorMessage = "Wrong email or password"
+            } else {
+                errorMessage = "An error occurred during sign-in"
+            }
+
+            showMessage({
+                type: "danger",
+                message: errorMessage
+            })
+        }
+    };
+
+
+
     return (
         <AppSafeView style={styles.container}>
             <Image source={IMAGES.appLogo} style={styles.logo} />
