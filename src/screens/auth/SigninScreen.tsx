@@ -50,7 +50,7 @@ const SigninScreen = () => {
                 data.email,
                 data.password,
             )
-            navigation.navigate("MainAppBottomTabs")
+            navigation.navigate("MainAppBottomTaps")
             console.log(userCredential);
         } catch (error: any) {
             let errorMessage = ""
@@ -96,7 +96,7 @@ const SigninScreen = () => {
                 title="Sign Up"
                 buttonStyle={styles.signupButton}
                 textColor={AppColors.primary}
-                onPress={() => navigation.navigate("SignUpScreen")}
+                onPress={() => navigation.navigate("SignUp")}
             />
         </AppSafeView>
     )

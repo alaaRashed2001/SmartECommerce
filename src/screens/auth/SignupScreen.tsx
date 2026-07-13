@@ -49,7 +49,7 @@ const SignupScreen = () => {
                 data.password,
             )
             Alert.alert("User Created");
-            navigation.navigate("MainAppBottomTabs");
+            navigation.navigate("MainAppBottomTaps");
             return userCredential.user
         } catch (error: any) {
             let errorMessage = ""
@@ -101,7 +101,7 @@ const SignupScreen = () => {
                 title="Go To Sign In"
                 buttonStyle={styles.signinButton}
                 textColor={AppColors.primary}
-                onPress={() => navigation.navigate("SignInScreen")}
+                onPress={() => navigation.navigate("SignIn")}
             />
         </AppSafeView>
     )
