@@ -1,46 +1,43 @@
 import { FlatList, StyleSheet } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import OrderItem from "../../components/cart/OrderItem";
 import { sharedPadHorizontal } from "../../styles/sharedStyles";
 import AppSafeView from "../../components/views/AppSafeView";
+import { fetchUserOrders } from "../../config/dataServices";
+import { getDateFromFireStoreTimeStampObject } from "../../helpers/dateTimeHelper";
 
 const MyOrdersScreen = () => {
-  // Dummy data for rendering the component
-  const orderData = [
-    {
-      id: 1,
-      date: "2025-01-01",
-      totalAmount: 120.5,
-      totalPrice: "$150",
-    },
-    {
-      id: 2,
-      date: "2025-01-02",
-      totalAmount: 75.0,
-      totalPrice: "$90",
-    },
-    {
-      id: 3,
-      date: "2025-01-03",
-      totalAmount: 200.25,
-      totalPrice: "$250",
-    },
-  ];
+
+  const [orderList, setOrderList] = useState([])
+
+  const getOrders = async () => {
+    const response = await fetchUserOrders()
+    setOrderList(response)
+  }
+
+  useEffect(() => { getOrders() }, [])
 
   return (
     <AppSafeView>
       <FlatList
         contentContainerStyle={{ paddingHorizontal: sharedPadHorizontal }}
-        data={orderData}
-        keyExtractor={(item, index) => item?.id.toString()}
-        renderItem={({ item }) => (
-          <OrderItem
-            date={item.date}
-            totalAmount={item.totalAmount}
-            totalPrice={item.totalPrice}
-            style={{ marginBottom: 10 }}
-          />
-        )}
+        data={orderList}
+        keyExtractor={(item, index) =>
+          item?.id.toString()}
+        renderItem={({ item }) => {
+          console.log("************************************");
+          console.log(JSON.stringify(item, null, 3));
+          console.log("************************************");
+          return (
+            <OrderItem
+              date={getDateFromFireStoreTimeStampObject(item.createdAt)}
+              totalAmount={item.totalProductPriceSum}
+              totalPrice={item.totalPrice}
+              style={{ marginBottom: 10 }}
+            />
+          )
+        }
+        }
       />
     </AppSafeView>
 
