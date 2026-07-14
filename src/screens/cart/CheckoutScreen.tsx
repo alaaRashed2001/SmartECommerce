@@ -1,17 +1,22 @@
-import { StyleSheet, View, Alert } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import React from 'react'
 import AppSafeView from '../../components/views/AppSafeView';
 import { commonStyles, sharedPadHorizontal } from '../../styles/sharedStyles';
 import { s, vs } from 'react-native-size-matters';
 import { AppColors } from '../../styles/color';
 import AppButton from '../../components/buttons/AppButton';
-import { Is_Android, Is_IOS } from '../../constants/constants';
+import { Is_Android, Is_IOS, shippingFee, taxesRate } from '../../constants/constants';
 import { useForm } from 'react-hook-form'
 import AppTextInputController from '../../components/inputs/AppTextInputController';
 import * as yup from 'yup'
 import { yupResolver } from "@hookform/resolvers/yup"
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import { addDoc, collection, doc } from 'firebase/firestore';
+import { db } from '../../config/firebase';
+import { showMessage } from 'react-native-flash-message';
+import { useNavigation } from '@react-navigation/native';
+import { EmptyCart } from '../../store/reducer/cartSlice';
 
 const schema = yup.object({
     fullName: yup
@@ -40,12 +45,32 @@ const CheckoutScreen = () => {
     });
 
     const { userData } = useSelector((state: RootState) => state.userSlice)
-    console.log("**********************************");
-    console.log(JSON.stringify(userData, null, 3));
-    console.log("**********************************");
-    const saveOrder = (formData: FormData) => {
-        Alert.alert(JSON.stringify(formData))
-        console.log(formData);
+    const { items } = useSelector((state: RootState) => state.cartSlice)
+    const totalProductPriceSum = items.reduce((acc, item) => acc + item.sum, 0)
+    const totalPrice = totalProductPriceSum + taxesRate + shippingFee
+    const navigation = useNavigation()
+    const dispatch = useDispatch()
+    const saveOrder = async (formData: FormData) => {
+        try {
+
+            const orderBody = { ...formData, items, totalProductPriceSum, createdAt: new Date(), totalPrice }
+
+            const userOrderRef = collection(doc(db, "users", userData.uid), "orders");
+            await addDoc(userOrderRef, orderBody)
+
+            const orderRef = collection(db, "orders")
+            await addDoc(orderRef, orderBody)
+
+            showMessage({ type: "success", message: "Order Placed Successfully" })
+            navigation.goBack()
+            console.log(formData);
+
+            dispatch(EmptyCart())
+
+        } catch (e) {
+            console.error("ERROR SAVING ORDER:", e);
+            showMessage({ type: "danger", message: "ERROR SAVING ORDER" })
+        }
     };
 
     return (

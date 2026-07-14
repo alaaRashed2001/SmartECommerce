@@ -52,7 +52,11 @@ const SignupScreen = () => {
             )
             Alert.alert("User Created");
             navigation.navigate("MainAppBottomTaps");
-            dispatch(setUserData(userCredential.user))
+            console.log(userCredential);
+            const userDataObj = {
+                uid: userCredential.user.uid
+            }
+            dispatch(setUserData(userDataObj))
 
         } catch (error: any) {
             let errorMessage = ""
