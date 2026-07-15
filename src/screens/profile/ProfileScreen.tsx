@@ -7,8 +7,15 @@ import { sharedPadHorizontal } from '../../styles/sharedStyles';
 import AppText from '../../components/text/AppText';
 import { s, vs } from 'react-native-size-matters'
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const ProfileScreen = () => {
   const navigation = useNavigation();
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem("USER_DATA")
+    navigation.navigate("AuthStack")
+  }
+
   return (
     <AppSafeView>
       <HomeHeader />
@@ -17,7 +24,7 @@ const ProfileScreen = () => {
       <View style={{ paddingHorizontal: sharedPadHorizontal }}>
         <ProfileSectionButton title="My Orders" onPress={() => navigation.navigate("MyOrdersScreen")} />
         <ProfileSectionButton title="Language" />
-        <ProfileSectionButton title="Logout" />
+        <ProfileSectionButton title="Logout" onPress={handleLogout} />
       </View>
 
     </AppSafeView>
