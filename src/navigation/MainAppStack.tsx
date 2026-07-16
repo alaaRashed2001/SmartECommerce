@@ -10,6 +10,8 @@ import { setLoading, setUserData } from '../store/reducer/userSlice';
 import { useEffect } from 'react';
 import { RootState } from '../store/store';
 import { AppColors } from '../styles/color';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../config/firebase';
 const stack = createStackNavigator();
 
 export default function MainAppStack() {
@@ -30,7 +32,17 @@ export default function MainAppStack() {
             dispatch(setLoading(false))
         }
     }
-    useEffect(() => { isLogedIn() }, [])
+    useEffect(() => { isLogedIn() }, []);
+
+    useEffect(() => {
+        onAuthStateChanged(auth, (userData) => {
+            if (userData) {
+                console.log("Signed In")
+            } else {
+                console.log("Signed Out")
+            }
+        })
+    }, []);
 
     if (isLoading) {
         return <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>

@@ -8,12 +8,16 @@ import AppText from '../../components/text/AppText';
 import { s, vs } from 'react-native-size-matters'
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../config/firebase';
+
 const ProfileScreen = () => {
   const navigation = useNavigation();
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem("USER_DATA")
     navigation.navigate("AuthStack")
+    await signOut(auth)
   }
 
   return (
